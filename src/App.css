@@ -1,0 +1,10 @@
+iframe {
+    width: 100%;
+    height: 70vh;
+    border: none;
+    scrolling: no;
+}
+
+.long-heading  {
+    word-break:break-all
+}
