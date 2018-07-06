@@ -16,7 +16,7 @@ const ResultList = ({elems, showEnd = true, showStart = true}) => {
     ));
 
     return (
-        <div className="list-group mt-lg-2">
+        <div className="list-group mt-lg-2 mb-2 mt-2">
             {listItems}
         </div>
     );

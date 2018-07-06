@@ -1,8 +1,8 @@
 import {API, HOST, PORT} from './config';
 
-async function getResultList({filter}) {
+async function getResultList({filter, page=1}) {
     const response = await fetch(
-        `${HOST}:${PORT}${API}/jobs/${filter}/`, {
+        `${HOST}${API}/jobs/${filter}/?page=${page}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -14,7 +14,11 @@ async function getResultList({filter}) {
 
     if (response.ok) {
         const responseJson = await response.json();
-        return responseJson.results;
+        return {
+            results: responseJson.results,
+            hasPrevious: responseJson.previous !== null,
+            hasNext: responseJson.next !== null
+        };
     }
     throw new Error('Network response was not ok.');
 }
@@ -25,7 +29,7 @@ async function postJob({id, url}) {
         url
     };
     const response = await fetch(
-        `${HOST}:${PORT}${API}/jobs/`, {
+        `${HOST}${API}/jobs/`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -45,7 +49,7 @@ async function postJob({id, url}) {
 
 async function getClassifiers() {
     const response = await fetch(
-        `${HOST}:${PORT}${API}/classifiers/`, {
+        `${HOST}${API}/classifiers/`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -65,7 +69,7 @@ async function getClassifiers() {
 
 async function getSingleResult({id}) {
     const jobResponse = await fetch(
-        `${HOST}:${PORT}${API}/jobs/${id}/`, {
+        `${HOST}${API}/jobs/${id}/`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -82,7 +86,7 @@ async function getSingleResult({id}) {
 
     // fetch page content
     const pageResponse = await fetch(
-        `${HOST}:${PORT}${API}/pages/${pageId}/`, {
+        `${HOST}${API}/pages/${pageId}/`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

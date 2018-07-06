@@ -26,9 +26,9 @@ const GeneralPage = () => (
                         <ExtractForm />
                     </div>
                 </nav>
-                <Route exact path="/" component={FilteredListPage}/>
-                <Route exact path="/failed" component={FilteredListPage}/>
-                <Route exact path="/pending" component={FilteredListPage}/>
+                <Route exact path="/:page([0-9]+)" component={FilteredListPage}/>
+                <Route exact path="/:filter(|failed|pending)" component={FilteredListPage}/>
+                <Route exact path="/:filter(|failed|pending)/:page([0-9]+)" component={FilteredListPage}/>
                 <Route path="/results/:id" component={ResultPage}/>
             </div>
         </div>

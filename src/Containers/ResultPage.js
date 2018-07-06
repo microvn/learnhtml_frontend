@@ -15,12 +15,39 @@ class ResultPage extends React.Component {
     }
 
     componentDidMount = () => {
+        this.fetchResults();
+    };
+
+    fetchResults = () => {
         const data = getSingleResult({id: this.props.match.params.id});
-        data.then((result) => this.setState({result}));
+        data.then((result) => {
+            this.setState({result});
+            if(!result.is_failed && result.date_ended === null) {
+                // if stil pending
+                setTimeout(() => this.fetchResults(), 5000);
+            }
+
+        });
     };
 
     render = () => {
-        return this.state.result === null ? null : <ResultDetail result={this.state.result} />;
+        if(this.state.result === null)
+            return null;
+        if(this.state.result.is_failed)
+            return (
+                <div className="mt-lg-2">
+                    <h3>{this.state.result.url}</h3>
+                    <h4> Failed! </h4>
+                </div>
+            );
+        if(this.state.result.date_ended === null)
+            return (
+                <div className="mt-lg-2">
+                    <h3>{this.state.result.url}</h3>
+                    <h4> Pending! </h4>
+                </div>
+            );
+        return <ResultDetail result={this.state.result} />;
     };
 };
 

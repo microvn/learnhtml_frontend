@@ -3,15 +3,11 @@ import {getClassifiers, postJob} from "../business/api";
 import {withRouter} from "react-router-dom";
 
 
-function validURL(str) {
-    const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-    return pattern.test(str);
-}
+const validURL = (value) => {
+    const expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+    const regexp = new RegExp(expression);
+    return regexp.test(value);
+};
 
 
 class ExtractForm extends React.Component {
@@ -31,8 +27,9 @@ class ExtractForm extends React.Component {
             console.log(classifierId);
             postJob({url, id: classifierId}).then((newJob) => {
                 this.props.history.push(`/results/${newJob.id}`);
-            });
+                window.location.reload();
 
+            });
         }
 
     };
@@ -40,14 +37,14 @@ class ExtractForm extends React.Component {
     render = () => {
         return (
             <form className="form-inline my-2 my-md-0">
-                <select ref={this.selectBox} id="inputState" className="form-control" onChange={() =>
-                    this.selectedClassifier = this.state.result[this.selectBox.current.selectedIndex]
+                <select ref={this.selectBox} id="inputState" className="form-control mr-1" onChange={() =>
+                    this.selectedClassifier = this.state.classifiers[this.selectBox.current.selectedIndex]
                 }>
                     {this.state.classifiers.map((classifier) =>
                         <option>{classifier.name}</option>
                     )})}
                 </select>
-                <input className="form-control" type="text" placeholder="URL" aria-label="URL" ref={this.urlInput}/>
+                <input className="form-control mr-1" type="text" placeholder="URL" aria-label="URL" ref={this.urlInput}/>
                 <button type="button" className="btn btn-outline-primary" onClick={this.submitExtract}>Extract!</button>
             </form>
         );

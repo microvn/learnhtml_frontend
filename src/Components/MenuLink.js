@@ -9,7 +9,7 @@ const MenuLink = ({label, to, activeOnlyWhenExact=true}) => (
         exact={activeOnlyWhenExact}
         children={({match}) => (
             <li className={match ? "nav-item active" : "nav-item"}>
-                <Link to={to} className="nav-link">
+                <Link to={to} className="nav-link" onClick="window.location.reload()">
                     {label}
                     {match ? <span className="sr-only">(current)</span> : null}
                 </Link>
