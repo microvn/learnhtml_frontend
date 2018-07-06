@@ -1,5 +1,3 @@
-import runtimeEnv from '@mars/heroku-js-runtime-env';
-
 // get url from env var(heroku) or use local
-export const HOST = runtimeEnv().REACT_API_URL !== undefined ? runtimeEnv().REACT_API_URL : 'http://localhost:8000';
+export const HOST = process.env.REACT_APP_SECRET_CODE !== undefined ? process.env.REACT_APP_SECRET_CODE : 'http://localhost:8000';
 export const API = '/api/v1';
